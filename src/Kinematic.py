@@ -37,19 +37,21 @@ def one_leg_IK(target_xyz, leg_index, config, debug=0):
 
     alpha_1 = np.arctan(x / footLength_project_yz)
     
-    arccos_argument = (config.THIGH_L ** 2 + D_hip_foot ** 2 - config.SHANK_L ** 2) / (2 * config.THIGH_L * D_hip_foot)
-    arccos_argument = np.clip(arccos_argument, -0.99, 0.99)
-    alpha_2 = -1 * np.arccos(arccos_argument)
+    a_t = (config.THIGH_L ** 2 + D_hip_foot ** 2 - config.SHANK_L ** 2) / (2 * config.THIGH_L * D_hip_foot)
+    a_t = np.clip(a_t, -0.99, 0.99)
+    alpha_2 = -1 * np.arccos(a_t)
     
     alpha = alpha_1 + alpha_2
     
-    arccos_argument = (config.THIGH_L ** 2 + config.SHANK_L ** 2 - D_hip_foot ** 2) / (2 * config.THIGH_L * config.SHANK_L)
-    arccos_argument = np.clip(arccos_argument, -0.99, 0.99)
-    theta = np.arccos(arccos_argument)
+    b_t = (config.THIGH_L ** 2 + config.SHANK_L ** 2 - D_hip_foot ** 2) / (2 * config.THIGH_L * config.SHANK_L)
+    b_t = np.clip(b_t, -0.99, 0.99)
+    theta = np.arccos(b_t)
      
-    beta = theta - (np.pi + alpha)
+    beta = (np.pi/2 - np.abs(alpha)) - theta
     
     if(debug == 1):
+        import os
+        os.system("clear")
         print("########## DEBUG KINEMATIC ###########")
         print()
         print("LEG: ", leg_index)
@@ -70,7 +72,8 @@ def one_leg_IK(target_xyz, leg_index, config, debug=0):
         print("alpha_2: " , round(rad_to_deg(alpha_2), 2)) 
         print("alpha: ", round(rad_to_deg(alpha), 2))
         print("theta: " , round(rad_to_deg(theta), 2))
-        print("beta" , round(rad_to_deg(beta), 2))
+        print("theta1: ", round(rad_to_deg(np.pi - np.abs(alpha)), 2))
+        print("beta: " , round(rad_to_deg(beta), 2))
 
 
     return np.array([alpha, beta, gamma])

@@ -6,6 +6,7 @@ from src.Kinematic import *
 from src.config import *
 import numpy as np
 
+
 kit = ServoKit(channels=16)
 
 def rad_to_deg(rad):
@@ -23,9 +24,13 @@ def update_position_one_leg_test(xyz, leg_index):
     #print((x,y,z))
     config = Configuration()
     
+    
+    print( (round(t), round(s), round(sh)) )
+    
     if leg_index == 0:
         pass
         # Leg index: 0 RF
+        # print(config.SERVO_OFFSET[config.SHANK_INDEX][config.RF_INDEX] + s )
         kit.servo[12].angle = config.SERVO_OFFSET[config.THIGH_INDEX][config.RF_INDEX] + t
         kit.servo[11].angle = config.SERVO_OFFSET[config.SHANK_INDEX][config.RF_INDEX] + s
         kit.servo[10].angle = config.SERVO_OFFSET[config.SHOULDER_INDEX][config.RF_INDEX] + sh
@@ -44,6 +49,6 @@ def update_position_one_leg_test(xyz, leg_index):
 
     elif leg_index == 3:
         # Leg index: 3 RB
-        kit.servo[3].angle = config.SERVO_OFFSET[config.THIGH_INDEX][config.RB_INDEX]
-        kit.servo[2].angle = config.SERVO_OFFSET[config.SHANK_INDEX][config.RB_INDEX]
-        kit.servo[1].angle = config.SERVO_OFFSET[config.SHOULDER_INDEX][config.RB_INDEX]
+        kit.servo[3].angle = config.SERVO_OFFSET[config.THIGH_INDEX][config.RB_INDEX] + t
+        kit.servo[2].angle = config.SERVO_OFFSET[config.SHANK_INDEX][config.RB_INDEX] + s
+        kit.servo[1].angle = config.SERVO_OFFSET[config.SHOULDER_INDEX][config.RB_INDEX] + sh

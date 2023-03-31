@@ -21,15 +21,15 @@ class Configuration:
         # THIGH / SHANK / SHOULDER
         self.SERVO_OFFSET = np.array(
             [
-                [76., 93, 85, 95.],
-                [95., 96, 88., 93.],
+                [100., 93, 85, 100.],
+                [74, 96, 88., 74.],
                 [95., 78., 100., 83.]
             ]
         )
 
         ################# Robot Configuration ############
         self.THIGH_L = 55
-        self.SHANK_L = 55
+        self.SHANK_L = 53
         self.SHOULDER_OS = 18.4
 
         self.BODY_L = 119.4
