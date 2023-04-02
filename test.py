@@ -77,7 +77,6 @@ class Doggo:
         move_to_offsets_point()
         
     def test_z_sweep_L(self, leg_index):
-        
         if ( leg_index != 1) and (leg_index != 2):
             raise ValueError(f"LEG {leg_index} not belong to left")
         
@@ -94,7 +93,43 @@ class Doggo:
                 update_position_one_leg_test((0, 18.4, i), leg_index)
                 time.sleep(0.03)
             # release_motor()
-
+    
+    def test_y_sweep_L(self, leg_index):
+        if ( leg_index != 1) and (leg_index != 2):
+            raise ValueError(f"LEG {leg_index} not belong to left")
+        
+        start = 80
+        end = -80
+        while(1):
+            for i in range(start, end, -7):
+                update_position_one_leg_test((0, i, -70), leg_index)
+                time.sleep(0.02)
+            for i in range(end, start, 7):
+                update_position_one_leg_test((0, i, -70), leg_index)
+                time.sleep(0.02)
+        # release_motor()
+        
+    def test_x_sweep_L(self, leg_index):
+        if ( leg_index != 1) and (leg_index != 2):
+            raise ValueError(f"LEG {leg_index} not belong to left")
+        
+        start = 50
+        end = -25
+        speed = 1
+        while(1):
+            for i in range(end, start, speed):
+                update_position_one_leg_test((i, 18.4, -40), leg_index)
+                time.sleep(0.02)
+            for i in range(-40, -90, -speed):
+                update_position_one_leg_test((50, 18.4, i), leg_index)
+                time.sleep(0.02)
+            for i in range(start, end, -speed):
+                update_position_one_leg_test((i, 18.4, -90), leg_index)
+                time.sleep(0.02)
+            for i in range(-90, -40, speed):
+                update_position_one_leg_test((-25, 18.4, i), leg_index)
+                time.sleep(0.02)
+        # release_motor()
 
 myDog = Doggo(config = Configuration())
-myDog.test_z_sweep_L(2)
+myDog.test_x_sweep_L(2)
