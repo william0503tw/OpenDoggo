@@ -18,7 +18,9 @@ class Configuration:
         # Servo angle OFFSET[3][4]
         # Column correspond to the index of LEG, and the offset to servo from top-down
         # OFFSET:
-        # THIGH / SHANK / SHOULDER
+        # THIGH / 
+        # SHANK / 
+        # SHOULDER
         self.SERVO_OFFSET = np.array(
             [
                 [100., 93, 85, 100.],
@@ -37,7 +39,9 @@ class Configuration:
 
 
         ############# Geometry ##############
-        self.LEG_FB = self.BODY_L / 2
+        # LEG_FB => Half of the length of the robot
+        # LEG_LR => Half of the width of the robot
+        self.LEG_FB = self.BODY_L / 2 
         self.LEG_LR = self.BODY_W / 2
 
         # For feet 1 (front left) and 2 (back left), the abduction offset is positive, for the right feet,
@@ -55,7 +59,7 @@ class Configuration:
             [
                 [self.LEG_FB, self.LEG_FB, -self.LEG_FB, -self.LEG_FB],
                 [-self.LEG_LR, self.LEG_LR, self.LEG_LR, -self.LEG_LR],
-                [0, 0, 0, 0]
+                [           0,         0,           0,              0]
             ]
         )
 

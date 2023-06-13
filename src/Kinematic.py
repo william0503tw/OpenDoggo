@@ -3,6 +3,10 @@ import numpy as np
 from src.config import Configuration
 import os
 
+# PRINT DEBUG INFO ?
+do_debug = 0
+
+
 # Leg's index
 #  1 | 0
 # ---|---
@@ -11,7 +15,10 @@ import os
 def rad_to_deg(rad):
     return  rad * (180.0 / np.pi)
 
-def one_leg_IK(target_xyz, leg_index, config, debug=0):
+def one_leg_IK(target_xyz, leg_index, config):
+    '''
+    unit : motor angle (rad)
+    '''
     (x, y, z) = target_xyz
     
     #### step 1 : RF (index 0) as main calculation result
@@ -67,12 +74,13 @@ def one_leg_IK(target_xyz, leg_index, config, debug=0):
      
     beta = (np.pi/2 - np.abs(alpha)) - theta
     
-    if(debug):
-        os.system("clear")
+    if(do_debug):
+        #os.system("clear")
         print("########## DEBUG KINEMATIC ###########")
         print()
         print("LEG: ", leg_index)
         print("xyz: ", (x, y, z))
+        print("result: ", np.array(back_inverse * left_inveres * [alpha, beta, gamma]))
         print()
         print("------- Length -------")
         print("d: ", round(p_distance_yz, 2))
@@ -92,15 +100,40 @@ def one_leg_IK(target_xyz, leg_index, config, debug=0):
         print("theta1: ", round(rad_to_deg(np.pi - np.abs(alpha)), 2))
         print("beta: " , round(rad_to_deg(beta), 2))
 
-    print("xyz: ", (x, y, z), end = "\r")
+    # print("xyz: ", (x, y, z), end = "\r")
     
     return np.array(back_inverse * left_inveres * [alpha, beta, gamma])
 
 
-def four_leg_IK():
-    pass
-
-
-
-
+def four_leg_IK(target, c):
+    """Find the new coordinate for world base, aka process all data with offset, doesn't calculate the IK angle
+    Unit: coordinate (mm)
+    ----------
+    target : numpy array (3,4)
+        Matrix of the body-frame foot positions. Each column corresponds to a separate foot.
+    config : Config object
+        Object of robot configuration parameters.
     
+    Returns: foot-frame coordinate
+    """
+    alpha = np.zeros((3, 4))
+    
+    # alpha -> World Base vector
+
+    for i in range(4):
+        # i : traverse through column (column: index of legs)
+        alpha[:,i] = np.round(target[:,i] - c.LEG_ORIGIN[:,i], 3)
+        
+    return alpha
+        
+        
+# note !!!
+# alpha = np.array(
+#     [
+#         [1,2,3],
+#         [4,5,6],
+#         [7,8,9]
+#     ]
+# )
+# print(alpha[:,0])
+# output: [1, 4, 7]
